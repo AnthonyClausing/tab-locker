@@ -96,13 +96,11 @@ function resetLocker(slot, tabs, header){
 }
 
 function startUpView(tabsList, lockers) {
-  tabsList.forEach(function(tabs,index){
-    let slot = index + 1
+  Object.entries(tabsList).forEach(function([slot,tabs]){
     let nameInput = document.createElement("input")
     let listItem = document.createElement("li")
     let [topDiv, botDiv] = makeTwoElements("div")
     let [saveBtn,deleteBtn] = makeTwoElements("button")
-
     nameInput.id = "name-" + slot
     nameInput.style.padding = "3px"
     nameInput.style.textAlign = "center"
@@ -135,29 +133,26 @@ function startUpView(tabsList, lockers) {
 }
 
 function startUpData(callback, lockers) {
-  let tabsList = []
+  let tabsList = {}
   saveSlots.forEach((slot, slotIndex) => {
     let tabsForSlot = []
     let sections = lockers[slot].sections
     let i = 0;
-    do {
+    for(let i = 0; i === 0 || i < sections; i++) {
       let tabsChunkTag = `tabLocker${slot}${i + 1}`
       chrome.storage.sync.get(tabsChunkTag, function (result) {
-        if(!result[tabsChunkTag]) {
-          tabsList.push([])
-          if(slotIndex === 4) callback(tabsList, lockers)
-        } else {
-          tabsForSlot.push(...result[tabsChunkTag])
-          if(i + 2 >= sections) {
-            tabsList.push(tabsForSlot)
-            if(slotIndex === 4) {
-              callback(tabsList, lockers)
-             } 
+        if(sections === 0) {//if slot has no saved tabs move along
+          tabsList[slot] = tabsForSlot 
+          if(slot === 5) {
+            callback(tabsList,lockers)
           }
+          return
         }
+        tabsForSlot.push(...result[tabsChunkTag])
+        if(i + 1 === sections) { tabsList[slot] = tabsForSlot }
+        if(slot === 5)  { callback(tabsList, lockers)}
       })
-      i = i + 1;
-    } while (i + 1 < sections);
+    }
   })
 }
 
