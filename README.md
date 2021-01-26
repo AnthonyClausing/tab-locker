@@ -1,2 +1,12 @@
 # tab-locker
-chrome extension to "bookmark" a selection of tabs for future browsing
+ A Chrome extension to cache tabs for future browsing
+
+### Setup 
+```
+npm install
+```
+- Navigate to chrome://extensions/
+- Enable Developer Mode
+- Click Load unpacked
+- Select the project's directory
+- Pin to the extensions in the toolbar
