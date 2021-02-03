@@ -113,3 +113,58 @@ onMount(() => {
 		{/each}
 	</ul>
 </main>
+
+<style>
+	.open {
+		background: #3bbf53;
+	}
+	.open:hover {
+		box-shadow:  0 0 5px #3bbf53, 0 0 10px #3bbf53, 0 0 15px #3bbf53;
+	}
+	.save {
+		background: #6c9974;
+	}
+	.save:hover {
+		box-shadow: 0 0 15px #6c9974, 0 0 20px #6c9974, 0 0 25px #6c9974;
+	}
+	.delete {
+		background: #f43838;
+	}
+	.delete:enabled:hover {
+		box-shadow: 0 0 15px #f43838, 0 0 20px #f43838, 0 0 25px #f43838;
+	}
+	.delete:disabled {
+		background: #ece9e9;
+	}
+	#locker-container {
+		list-style: none;
+		padding: 0;
+		width: 12rem;
+	}
+	.lockers {
+		max-height: 4.5em;
+		text-align: center;
+    padding: 0.25rem;
+    margin: 0.25rem;
+		border: 2px solid black;
+		background-color: #4d4855;
+		background-image: linear-gradient(192deg, #4d4855 0%, #000000 74%);
+	}
+	.name-input {
+		padding: 2px 0;
+		text-align: center;
+		outline: none;
+	}
+	.locker-name {
+		color: #fff;
+		margin: 5px;
+		text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e64f, 0 0 20px #0073e64f, 0 0 25px #0073e64f, 0 0 30px #0073e64f, 0 0 35px #0073e64f;
+	}
+	.locker-name > div{
+		padding: 2px;
+	}
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>
