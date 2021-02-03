@@ -19,7 +19,7 @@
   ```
   npm run dev
   ```
-## Install Extension on Chrome Browser
+## Installation
   ```
   Navigate to chrome://extensions
   Enable Developer Mode
