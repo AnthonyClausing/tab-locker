@@ -20,7 +20,8 @@
   npm run dev
   ```
 ## Install Extension on Chrome Browser
-  ```Navigate to chrome://extensions
+  ```
+  Navigate to chrome://extensions
   Enable Developer Mode
   Load unpacked
   Select tab-locker/public
