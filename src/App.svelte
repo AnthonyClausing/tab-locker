@@ -90,4 +90,26 @@ onMount(() => {
 })
 </script>
 
-<h1>Hello world</h1>
+<main>
+	<ul id="locker-container">
+		{#each Object.keys(lockers) as slot}
+			<li id="locker-{slot}" class="lockers">
+				<div class="locker-name">
+					{#if lockers[slot].header}
+						<div>{lockers[slot].header}</div>
+					{:else}
+						<input id="name-{slot}" bind:value={tempHeaders[slot]} class="name-input" placeholder="INSERT NAME" maxlength="21">
+					{/if}
+				</div>
+				<div class="buttons">
+					{#if tabsList[slot].length}
+						<button class="open" on:click={() => openWindow(tabsList[slot])}>Open {tabsList[slot].length} Tabs</button>
+					{:else}
+						<button class="save" on:click={() => createLocker(slot)}>Save Tabs</button>
+					{/if}
+					<button disabled="{!tabsList[slot].length}" class="delete" on:click={() => deleteLocker(slot)}>Delete</button>
+				</div>
+			</li>
+		{/each}
+	</ul>
+</main>
