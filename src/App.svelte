@@ -20,6 +20,7 @@ function updateLocker(slot,tabs,locker){
 function setTabsList(slot,tabs) {
 	tabsList[slot] = tabs
 }
+
 //utils
 function openWindow(tabs) {
 	chrome.windows.create({url: tabs, state: "maximized"})
@@ -36,7 +37,6 @@ function getCurrentDate(){
 		period: hoursin24 >= 12 ? "PM" : "AM"
 	}
 }
-//
 
 //methods
 function createLocker(slot) {
@@ -82,6 +82,7 @@ function initTabList() {
 		}
 	})
 }
+//Lifecycle methods
 onMount(() => {
 	chrome.storage.sync.get("tabLockers", ({tabLockers}) => { 
 		lockers = tabLockers
