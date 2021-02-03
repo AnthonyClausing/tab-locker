@@ -1,5 +1,5 @@
 
-# tab-locker
+# Tab Locker
   A Chrome extension to cache tabs for future browsing
  
 ## Get started
