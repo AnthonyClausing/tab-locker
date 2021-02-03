@@ -1,0 +1,93 @@
+<script>
+import { onMount } from "svelte";
+const SECTION_LIMIT = 15
+
+// state
+let lockers = {1: {header: '', sections: 0}, 2:{header:'', sections: 0}, 3: {header:'', sections:0}, 4:{header:'', sections:0}, 5:{header:'', sections:0}}
+let tabsList = {1:[], 2:[], 3:[], 4:[], 5:[]}
+let tempHeaders = {1:'',2:'',3:'',4:'',5:''}
+
+//mutations
+function clearState(slot) {
+	lockers[slot] = {header: '', sections: 0}
+	tabsList[slot] = []
+	tempHeaders[slot] = ''
+}
+function updateLocker(slot,tabs,locker){
+	lockers[slot] = locker
+	tabsList[slot] = tabs
+}
+function setTabsList(slot,tabs) {
+	tabsList[slot] = tabs
+}
+//utils
+function openWindow(tabs) {
+	chrome.windows.create({url: tabs, state: "maximized"})
+}
+function getCurrentDate(){
+	let now = new Date()
+  let hoursin24 = now.getHours()
+	return {
+		month: now.getMonth() + 1, 
+		day: now.getDate(), 
+		year: now.getFullYear(), 
+		hours: hoursin24 > 12 ? hoursin24 - 12 : hoursin24 === 0 ? 12 : hoursin24, 
+		minutes: now.getMinutes(),
+		period: hoursin24 >= 12 ? "PM" : "AM"
+	}
+}
+//
+
+//methods
+function createLocker(slot) {
+	let {month,day,year,hours,minutes,period} = getCurrentDate()
+	let newHeader = tempHeaders[slot] || `${month}/${day}/${year} ${hours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`
+	chrome.tabs.query({currentWindow: true},(tabs) => {
+		let newTabs = tabs.map(({url}) => url)	
+		let sections =  Math.ceil(newTabs.length/SECTION_LIMIT)
+		let newLocker = { header: newHeader, sections}
+		let newStorage = {...lockers,[slot]: newLocker}
+		chrome.storage.sync.set({tabLockers: newStorage}, () => {
+			for(let i = 1; i <= sections; i++) {
+				chrome.storage.sync.set({[`tabLocker${slot}${i}`] : newTabs.slice(SECTION_LIMIT * (i-1), SECTION_LIMIT * i)})
+			}
+			updateLocker(slot, newTabs, newLocker)
+		})
+	})
+}
+function deleteLocker(slot) {
+	let newStorage = {...lockers}
+	newStorage[slot] = {header: "", sections: 0}
+	let slotSections = lockers[slot].sections
+	let sectionsToRemove = [...Array(slotSections)].map((section) => `tabLocker${slot}${section}`)
+	chrome.storage.sync.set({tabLockers:  newStorage}, () => {
+		chrome.storage.sync.remove(sectionsToRemove, () => clearState(slot))
+	})
+}
+function initTabList() {
+	Object.keys(lockers).forEach(slotNum => {
+		let sections = lockers[slotNum].sections
+		if(!sections){ //if falsey i.e: 0,undefined,null
+			setTabsList(slotNum, [])
+			return
+		}else{
+			let tabsForSlot = []
+			for(let i = 1; i <= sections; i++) {
+				let tabsChunkTag = `tabLocker${slotNum}${i}`
+				chrome.storage.sync.get(tabsChunkTag, function (result) {
+					tabsForSlot.push(...result[tabsChunkTag])
+					if(i === sections) setTabsList(slotNum,tabsForSlot)
+				})
+			}
+		}
+	})
+}
+onMount(() => {
+	chrome.storage.sync.get("tabLockers", ({tabLockers}) => { 
+		lockers = tabLockers
+		initTabList()
+	})
+})
+</script>
+
+<h1>Hello world</h1>
