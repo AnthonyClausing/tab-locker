@@ -85,7 +85,7 @@ function initTabList() {
 //Lifecycle methods
 onMount(() => {
 	chrome.storage.sync.get("tabLockers", ({tabLockers}) => { 
-		lockers = tabLockers
+		lockers = tabLockers || lockers
 		initTabList()
 	})
 })
@@ -140,13 +140,13 @@ onMount(() => {
 	#locker-container {
 		list-style: none;
 		padding: 0;
-		width: 12rem;
+		width: 14rem;
 	}
 	.lockers {
-		max-height: 4.5em;
+		max-height: 7em;
 		text-align: center;
-    padding: 0.25rem;
-    margin: 0.25rem;
+		padding: 0.25rem;
+		margin: 0.25rem;
 		border: 2px solid black;
 		background-color: #4d4855;
 		background-image: linear-gradient(192deg, #4d4855 0%, #000000 74%);
@@ -158,6 +158,7 @@ onMount(() => {
 	}
 	.locker-name {
 		color: #fff;
+		font-size: 14px;
 		margin: 5px;
 		text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e64f, 0 0 20px #0073e64f, 0 0 25px #0073e64f, 0 0 30px #0073e64f, 0 0 35px #0073e64f;
 	}
