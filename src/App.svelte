@@ -85,7 +85,7 @@ function initTabList() {
 //Lifecycle methods
 onMount(() => {
 	chrome.storage.sync.get("tabLockers", ({tabLockers}) => { 
-		lockers = tabLockers
+		lockers = tabLockers || lockers
 		initTabList()
 	})
 })
