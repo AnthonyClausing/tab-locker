@@ -59,7 +59,7 @@ function deleteLocker(slot) {
 	let newStorage = {...lockers}
 	newStorage[slot] = {header: "", sections: 0}
 	let slotSections = lockers[slot].sections
-	let sectionsToRemove = [...Array(slotSections)].map((section) => `tabLocker${slot}${section}`)
+	let sectionsToRemove = [...Array(slotSections)].map((_section, idx) => `tabLocker${slot}${idx + 1}`)
 	chrome.storage.sync.set({tabLockers:  newStorage}, () => {
 		chrome.storage.sync.remove(sectionsToRemove, () => clearState(slot))
 	})
