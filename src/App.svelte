@@ -120,7 +120,7 @@ onMount(() => {
 		background: #3bbf53;
 	}
 	.open:hover {
-		box-shadow:  0 0 5px #3bbf53, 0 0 10px #3bbf53, 0 0 15px #3bbf53;
+		box-shadow:  0 0 15px #3bbf53, 0 0 20px #3bbf53, 0 0 25px #3bbf53;
 	}
 	.save {
 		background: #6c9974;
