@@ -1,6 +1,6 @@
 {
   "name": "Tab Locker",
-  "version": "1.0",
+  "version": "0.0.0.1",
   "description": "Save your current tabs for later use",
   "permissions": ["storage", "tabs"],
   "background": {
